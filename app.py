@@ -1002,7 +1002,7 @@ def update_output(a,b,c,d,m,x,x_bernoulli,n,conhecido,prioris,verossimilhancas):
     [Input("botao","n_clicks"),
      Input("verossimilhancas","value")]
 )
-def update_output(n_clicks,verossimilhancas):
+def update_output(n_clicks,verossimilhancas,a,b,c,d,m,x,x_bernoulli,n,conhecido):
     if n_clicks % 2 == 0:
       if verossimilhancas=="Bernoulli":
         return r'''
@@ -1012,13 +1012,13 @@ def update_output(n_clicks,verossimilhancas):
 
 $p \sim Beta(a,b)$
 
-$f(p)=\frac{\Gamma(a+b) x^{a-1}(1-x)^{b-1}}{\Gamma(a)\Gamma(b)}\mathbb{I}_{(0,1)}(p)$
+$f(p)=\frac{\Gamma(a+b) p^{a-1}(1-p)^{b-1}}{\Gamma(a)\Gamma(b)}\mathbb{I}_{(0,1)}(p)$
 
-#### Verossimilhança:
+#### Modelo estatístico:
 
-$X|p \sim Bernoulli(p)$
+$X_1 ... X_n$ condicionalmente independentes e identicamente distribuídos $Bernoulli(p)$
 
-$L(p|\mathbf{X})=p^{n\bar{x}}(1-p)^{(n-1)\bar{x}}$
+#### Verossimilhança: $L(p|\mathbf{X})=p^{n\bar{x}}(1-p)^{(n-1)\bar{x}}$
 
 #### Posteriori:
 
@@ -1032,13 +1032,13 @@ $p|\mathbf{X}\sim Beta(a+n\bar{x}, b+n(1-\bar{x}))$
 
 $p \sim Beta(a,b)$
 
-$f(p)=\frac{\Gamma(a+b) x^{a-1}(1-x)^{b-1}}{\Gamma(a)\Gamma(b)}\mathbb{I}_{(0,1)}(p)$
+$f(p)=\frac{\Gamma(a+b) p^{a-1}(1-p)^{b-1}}{\Gamma(a)\Gamma(b)}\mathbb{I}_{(0,1)}(p)$
 
-#### Verossimilhança:
+#### Modelo estatístico:
 
-$X|p \sim Binomial(m, p)$
+$X_1 ... X_n$ condicionalmente independentes e identicamente distribuídos $Binomial(m, p)$
 
-$L(p|\mathbf{X})=\left(\prod_{i=1}^{n}  \binom{m}{x_i} \right) p^{n\bar{x}} (1 - p)^{n(m-\bar{x})}$
+#### Verossimilhança: $L(p|\mathbf{X})=\left(\prod_{i=1}^{n}  \binom{m}{x_i} \right) p^{n\bar{x}} (1 - p)^{n(m-\bar{x})}$
 
 #### Posteriori:
 
@@ -1052,13 +1052,13 @@ $p|\mathbf{X}\sim Beta(n\bar{x} + a, b+n(m - \bar{x}))$
 
 $p \sim Beta(a,b)$
 
-$f(p)=\frac{\Gamma(a+b) x^{a-1}(1-x)^{b-1}}{\Gamma(a)\Gamma(b)}\mathbb{I}_{(0,1)}(p)$
+$f(p)=\frac{\Gamma(a+b) p^{a-1}(1-p)^{b-1}}{\Gamma(a)\Gamma(b)}\mathbb{I}_{(0,1)}(p)$
 
-#### Verossimilhança:
+#### Modelo estatístico:
 
-$X|p \sim \text{Geométrica}(p)$
+$X_1 ... X_n$ condicionalmente independentes e identicamente distribuídos $\text{Geométrica}(p)$
 
-$L(p|\mathbf{X})=p^n(1-p)^{n(\bar{x}-1)}$
+#### Verossimilhança: $L(p|\mathbf{X})=p^n(1-p)^{n(\bar{x}-1)}$
 
 #### Posteriori:
 
@@ -1072,18 +1072,18 @@ $p|\mathbf{X}\sim Beta(a + n, b+n(\bar{x} - 1))$
 
 $p \sim Beta(a,b)$
 
-$f(p)=\frac{\Gamma(a+b) x^{a-1}(1-x)^{b-1}}{\Gamma(a)\Gamma(b)}\mathbb{I}_{(0,1)}(p)$
+$f(p)=\frac{\Gamma(a+b) p^{a-1}(1-p)^{b-1}}{\Gamma(a)\Gamma(b)}\mathbb{I}_{(0,1)}(p)$
 
-#### Verossimilhança:
+#### Modelo estatístico:
 
-$X|p \sim Binomial Negativa(r, p)$
+$X_1 ... X_n$ condicionalmente independentes e identicamente distribuídos $Binomial Negativa(r, p)$
 
-$L(p|\mathbf{X})=\left( \prod_{i=1}^n  \binom{x_i-1}{r-1} \right) p^{nr}(1-p)^{n(\bar{x}-r)}$
+#### Verossimilhança: $L(p|\mathbf{X})=\left( \prod_{i=1}^n  \binom{x_i-1}{r-1} \right) p^{nr}(1-p)^{n(\bar{x}-r)}$
 
 #### Posteriori:
 
 $p|\mathbf{X}\sim Beta(a + nr, b+n(\bar{x} - r))$
-'''        
+'''
       elif verossimilhancas=="Exponencial":
         return r'''
 ### Fórmulas matemáticas:
@@ -1094,11 +1094,11 @@ $\lambda \sim Gama(a,b)$
 
 $f(\lambda)=\frac{b^a \lambda^{a - 1} e^{-b \lambda}}{\Gamma(a)} \mathbb{I}_{(0, \infty)}(\lambda)$
 
-#### Verossimilhança:
+#### Modelo estatístico:
 
-$X|\lambda \sim Exponencial(\lambda)$
+$X_1 ... X_n$ condicionalmente independentes e identicamente distribuídos $Exponencial(\lambda)$
 
-$L(\lambda|\mathbf{X})=\lambda^ne^{-\lambda n\bar{x}}$
+#### Verossimilhança: $L(\lambda|\mathbf{X})=\lambda^ne^{-\lambda n\bar{x}}$
 
 #### Posteriori:
 
@@ -1114,11 +1114,11 @@ $\lambda \sim Gama(a,b)$
 
 $f(\lambda)=\frac{b^a \lambda^{a - 1} e^{-b \lambda}}{\Gamma(a)} \mathbb{I}_{(0, \infty)}(\lambda)$
 
-#### Verossimilhança:
+#### Modelo estatístico:
 
-$X|\lambda \sim Poisson(\lambda)$
+$X_1 ... X_n$ condicionalmente independentes e identicamente distribuídos $Poisson(\lambda)$
 
-$L(\lambda|\mathbf{X})= \frac{e^{-\lambda}\lambda^{n\bar{x}}}{\prod_{i=1}^n x_i!}$
+#### Verossimilhança: $L(\lambda|\mathbf{X})= \frac{e^{-\lambda}\lambda^{n\bar{x}}}{\prod_{i=1}^n x_i!}$
 
 #### Posteriori:
 
@@ -1134,11 +1134,11 @@ $b \sim Gama(a_0,b_0)$
 
 $f(b)=\frac{b_0^{a_0} b^{a_0 - 1} e^{-b_0 b}}{\Gamma(a_0)} \mathbb{I}_{(0, \infty)}(b)$
 
-#### Verossimilhança:
+#### Modelo estatístico:
 
-$X|b \sim Gama(a,b)$
+$X_1 ... X_n$ condicionalmente independentes e identicamente distribuídos $Gama(a,b)$
 
-$L(b|\mathbf{X})=\frac{\left( \prod_{i=1}^n x_i \right)^{a-1} b^{na}e^{-nb\bar{x}}}{\Gamma(a)}$
+#### Verossimilhança: $L(b|\mathbf{X})=\frac{\left( \prod_{i=1}^n x_i \right)^{a-1} b^{na}e^{-nb\bar{x}}}{\Gamma(a)}$
 
 #### Posteriori:
 
@@ -1154,11 +1154,11 @@ $\mu \sim Normal(\mu_0,\sigma^2_0)$
 
 $f(\mu) = \frac{1}{\sqrt{2\pi \sigma^2_0}} \exp\left( -\frac{(\mu - \mu_0)^2}{2\sigma^2_0} \right) \mathbb{I}_{(-\infty, \infty)}(\mu)$
 
-#### Verossimilhança:
+#### Modelo estatístico:
 
-$X|\mu \sim Normal \left(\mu,\sigma^2 \right)$
+$X_1 ... X_n$ condicionalmente independentes e identicamente distribuídos $Normal \left(\mu,\sigma^2 \right)$
 
-$L(\mu|\mathbf{X}) = \left(\frac{1}{\sqrt{2\pi \sigma^2}}\right)^n \exp\left(-\frac{1}{2\sigma^2}\left(n\mu^2-2\mu n\bar{x} + \sum_{i=1}^{n} x_i^2\right)\right)$
+#### Verossimilhança: $L(\mu|\mathbf{X}) = \left(\frac{1}{\sqrt{2\pi \sigma^2}}\right)^n \exp\left(-\frac{1}{2\sigma^2}\left(n\mu^2-2\mu n\bar{x} + \sum_{i=1}^{n} x_i^2\right)\right)$
 
 #### Posteriori:
 
@@ -1174,18 +1174,198 @@ $(\mu,\tau) \sim Normal-Gama(\mu_0,\lambda,a,b)$
 
 $f(\mu,\tau)=\frac{b^a \sqrt{\lambda}\tau^{a-0.5}e^{-b\tau}} {\Gamma{(a)}\sqrt{2\pi}} exp\left( \frac{\lambda \tau \left( \mu-\mu_0 \right)^2}{2} \right)$
 
-#### Verossimilhança:
+#### Modelo estatístico:
 
-$X|\mu,\tau \sim Normal(\mu,\tau^{-1})$
+$X_1 ... X_n$ condicionalmente independentes e identicamente distribuídos $Normal(\mu,\tau^{-1})$
 
-$L(\mu,\tau|\mathbf{X})=\frac{1}{(\sqrt{2\pi})^n}\tau^{\frac{n}{2}}exp(\frac{-ns^2\tau}{2})exp \left( \frac{-n\tau \left( \mu-\bar{x} \right)^2}{2} \right)$
+#### Verossimilhança: $L(\mu,\tau|\mathbf{X})=\frac{1}{(\sqrt{2\pi})^n}\tau^{\frac{n}{2}}exp(\frac{-ns^2\tau}{2})exp \left( \frac{-n\tau \left( \mu-\bar{x} \right)^2}{2} \right)$
 
 #### Posteriori:
 
 $(\mu,\tau)|\mathbf{X} \sim Normal-Gama\left( \frac{\lambda\mu_0 + n\bar{x}}{\lambda+n}, \lambda+n, a+\frac{n}{2}, b+\frac{1}{2}\left( ns^2 + \frac{\lambda n \left( \bar{x} - \mu_0 \right)^2}{\lambda+n} \right) \right)$
 '''
     else:
-        return ""
+      if verossimilhancas=="Bernoulli":
+        return fr'''
+### Fórmulas matemáticas:
+
+#### Priori:
+
+$p \sim Beta({a},{b})$
+
+$f(p)=\frac{{\Gamma({a+b}) p^{a-1}(1-p)^{b-1}}}{{\Gamma({a})\Gamma({b})}}\mathbb{{I}}_{{(0,1)}}(p)$
+
+#### Modelo estatístico:
+
+$X_1 ... X_n$ condicionalmente independentes e identicamente distribuídos $Bernoulli(p)$
+
+#### Verossimilhança: $L(p|\mathbf{{X}})=p^{{{n*x_bernoulli}}}(1-p)^{{{(n-1)*x_bernoulli}}}$
+
+#### Posteriori:
+
+$p|\mathbf{{X}}\sim Beta({a+n*x_bernoulli}, {b+n*(1-x_bernoulli)})$
+'''
+      elif verossimilhancas=="Binomial":
+        return fr'''
+### Fórmulas matemáticas:
+
+#### Priori:
+
+$p \sim Beta({a},{b})$
+
+$f(p)=\frac{{\Gamma({a+b}) p^{a-1}(1-p)^{b-1}}}{{\Gamma({a})\Gamma({b})}}\mathbb{{I}}_{{(0,1)}}(p)$
+
+#### Modelo estatístico:
+
+$X_1 ... X_n$ condicionalmente independentes e identicamente distribuídos $Binomial({m}, p)$
+
+#### Verossimilhança: $L(p|\mathbf{{X}})=\left(\prod_{{i=1}}^{n}  \binom{{{m}}}{{x_i}} \right) p^{{{n*x}}} (1 - p)^{{{n*(m-x)}}}$
+
+#### Posteriori:
+
+$p|\mathbf{{X}}\sim Beta({n*x + a}, {b+n*(m - x)})$
+        '''
+      elif verossimilhancas=="Geométrica":
+        return fr'''
+### Fórmulas matemáticas:
+
+#### Priori:
+
+$p \sim Beta({a},{b})$
+
+$f(p)=\frac{{\Gamma({a+b}) p^{a-1}(1-p)^{b-1}}}{{\Gamma({a})\Gamma({b})}}\mathbb{{I}}_{{(0,1)}}(p)$
+
+#### Modelo estatístico:
+
+$X_1 ... X_n$ condicionalmente independentes e identicamente distribuídos $\text{{Geométrica}}(p)$
+
+#### Verossimilhança: $L(p|\mathbf{{X}})=p^{n}(1-p)^{{{n*(x-1)}}}$
+
+#### Posteriori:
+
+$p|\mathbf{{X}} \sim Beta({a + n}, {b+n*(x - 1)})$
+'''
+      elif verossimilhancas=="Binomial negativa":
+        return fr'''
+### Fórmulas matemáticas:
+
+#### Priori:
+
+$p \sim Beta({a},{b})$
+
+$f(p)=\frac{{\Gamma({a+b}) p^{a-1}(1-p)^{b-1}}}{{\Gamma({a})\Gamma({b})}}\mathbb{{I}}_{{(0,1)}}(p)$
+
+#### Modelo estatístico:
+
+$X_1 ... X_n$ condicionalmente independentes e identicamente distribuídos $Binomial Negativa({m}, p)$
+
+#### Verossimilhança: $L(p|\mathbf{{X}})=\left( \prod_{{i=1}}^{n}  \binom{{x_i-1}}{{{m-1}}} \right) p^{{{n*m}}}(1-p)^{{{n*(x-m)}}}$
+
+#### Posteriori:
+
+$p|\mathbf{{X}} \sim Beta({a + n*m}, {b+n*(x - m)})$
+'''
+      elif verossimilhancas=="Exponencial":
+        return fr'''
+### Fórmulas matemáticas:
+
+#### Priori:
+
+$\lambda \sim Gama({a},{b})$
+
+$f(\lambda)=\frac{{{b**a} \lambda^{{{a - 1}}} e^{{- {b} \lambda}}}}{{\Gamma({a})}} \mathbb{{I}}_{{(0, \infty)}}(\lambda)$
+
+#### Modelo estatístico:
+
+$X_1 ... X_n$ condicionalmente independentes e identicamente distribuídos $Exponencial(\lambda)$
+
+#### Verossimilhança: $L(\lambda|\mathbf{{X}})=\lambda^{n}e^{{- {n*x} \lambda }}$
+
+#### Posteriori:
+
+$\lambda|\mathbf{{X}}\sim Gama({a+n}, {b+n*x})$
+'''
+      elif verossimilhancas=="Poisson":
+        return fr'''
+### Fórmulas matemáticas:
+
+#### Priori:
+
+$\lambda \sim Gama({a},{b})$
+
+$f(\lambda)=\frac{{{b**a} \lambda^{{{a - 1}}} e^{{- {b} \lambda}}}}{{\Gamma({a})}} \mathbb{{I}}_{{(0, \infty)}}(\lambda)$
+
+#### Modelo estatístico:
+
+$X_1 ... X_n$ condicionalmente independentes e identicamente distribuídos $Poisson(\lambda)$
+
+#### Verossimilhança: $L(\lambda|\mathbf{{X}})= \frac{{e^{{-\lambda}}\lambda^{{{n*x}}}}}{{\prod_{{i=1}}^{n} x_i!}}$
+
+#### Posteriori:
+
+$\lambda|\mathbf{{X}} \sim Gama({n*x+a}, {b+n})$
+'''
+      elif verossimilhancas=="Gama (b desconhecido)":
+        return fr'''
+### Fórmulas matemáticas:
+
+#### Priori:
+
+$b \sim Gama({a},{b})$
+
+$f(b)=\frac{{{b**a} b^{{{a - 1}}} e^{{- {b} b}}}}{{\Gamma({a})}} \mathbb{{I}}_{{(0, \infty)}}(b)$
+
+#### Modelo estatístico:
+
+$X_1 ... X_n$ condicionalmente independentes e identicamente distribuídos $Gama({conhecido},b)$
+
+#### Verossimilhança: $L(b|\mathbf{{X}})=\frac{{\left( \prod_{{i=1}}^{n} x_i \right)^{{{conhecido-1}}} b^{{{n*conhecido}}}e^{{- {n*x} b}}}}{{\Gamma({conhecido})}}$
+
+#### Posteriori:
+
+$p|\mathbf{{X}}\sim Gama({a + n*conhecido}, {b + n*x})$
+'''
+      elif verossimilhancas=="Normal (média desconhecida)":
+        return fr'''
+### Fórmulas matemáticas:
+
+#### Priori:
+
+$\mu \sim Normal({a},{b})$
+
+$f(\mu) = \frac{{1}}{{\sqrt{{2 {b} \pi  }}}} \exp\left( -\frac{{(\mu - {a})^2}}{{2 {b} }} \right) \mathbb{{I}}_{{(-\infty, \infty)}}(\mu)$
+
+#### Modelo estatístico:
+
+$X_1 ... X_n$ condicionalmente independentes e identicamente distribuídos $Normal \left(\mu,{conhecido} \right)$
+
+#### Verossimilhança: $L(\mu|\mathbf{{X}}) = \left(\frac{{1}}{{\sqrt{{2 {conhecido} \pi }}}}\right)^{n} \exp\left(-\frac{{1}}{{2 {conhecido} }}\left({n} \mu^2- {2*n*x} \mu  + \sum_{{i=1}}^{n} x_i^2\right)\right)$
+
+#### Posteriori:
+
+$\mu|\mathbf{{X}}\sim Normal\left( {(n*b*x + conhecido*a)/(n*b + conhecido):.3f} \,,\, {(conhecido*b)/(n*b + conhecido):.3f}\right)$
+'''
+      else:
+        return fr'''
+### Fórmulas matemáticas:
+
+#### Priori:
+
+$(\mu,\tau) \sim Normal-Gama({a},{b},{c},{d})$
+
+$f(\mu,\tau)=\frac{{{d**c} \sqrt{{{b}}}\tau^{{{c-0.5}}}e^{{- {d} \tau}}}} {{\Gamma{{({c})}}\sqrt{{2\pi}}}} exp\left( \frac{{{b} \tau \left( \mu-{a} \right)^2}}{{2}} \right)$
+
+#### Modelo estatístico:
+
+$X_1 ... X_n$ condicionalmente independentes e identicamente distribuídos $Normal(\mu,\tau^{{-1}})$
+
+#### Verossimilhança: $L(\mu,\tau|\mathbf{{X}})=\frac{{1}}{{(\sqrt{{2\pi}})^{n}}}\tau^{{{n/2}}}exp(\frac{{- {n*conhecido} \tau}}{{2}})exp \left( \frac{{- {n} \tau \left( \mu-{x} \right)^2}}{{2}} \right)$
+
+#### Posteriori:
+
+$(\mu,\tau)|\mathbf{{X}} \sim Normal-Gama\left( {(b*a+n*x)/(b+n):.3f}, {b+n}, {c+n/2},{(d +0.5*(n*conhecido + (b*n*(x-a)**2)/(b+n))):.3f} \right)$
+
+'''
 
 server = app.server
 
