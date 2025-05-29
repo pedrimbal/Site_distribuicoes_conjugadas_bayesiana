@@ -7,6 +7,7 @@ Original file is located at
     https://colab.research.google.com/drive/1yOh6M2iWBARlD4SDW73fC5Mo7pGihw0K
 """
 
+# !pip install dash
 import numpy as np
 import plotly.graph_objects as go
 from scipy.stats import beta, binom,gamma, norm, invgamma
@@ -14,6 +15,7 @@ from dash import Dash, html, dcc, Input, Output
 import math
 
 app = Dash(__name__)
+
 
 # Funções de probabilidade
 def plot_beta_distribution(a, b,v="Priori"):
@@ -627,13 +629,14 @@ def Normal_Gama_final(mu,lambda_,alpha,beta,x,s,n):
                       ))
   return fig
 
+
 lista_prioris=list(["Beta","Gama","Normal","Normal-Gama"])
 
 app.layout = html.Div(children=[
     html.H1(children='Trabalho de Bayesiana sobre distribuições conjugadas - Grupo PET Estatística'),
     html.H4('Selecione a distribuição da priori'),
     dcc.Dropdown(lista_prioris,value="Beta",id="prioris"),
-    html.H4('Selecione a distribuição da verossimilhança'),
+    html.H4('Selecione o modelo estatístico'),
     dcc.Dropdown(value="Bernoulli",id="verossimilhancas"),
     html.H4('Digite os parâmetros da priori'),
 
@@ -719,7 +722,7 @@ app.layout = html.Div(children=[
     dcc.Graph(figure=beta_bernoulli(2,4,0.5,2),id="grafico_conjunto"),
 
     # Texto em latex
-    html.Button("Mostrar/Ocultar contas", id="botao", n_clicks=0),
+    html.Button("Aplicar valores", id="botao", n_clicks=0),
     dcc.Markdown(id="texto_botao",mathjax=True)
 ],    style={
         "backgroundColor": "#f0f0f0",  # Cor de fundo
@@ -737,7 +740,7 @@ app.layout = html.Div(children=[
 )
 def update_dropdown(prioris):
     if prioris=="Beta":
-        return list(["Bernoulli","Binomial","Geométrica","Binomial negativa"])
+        return list(["Bernoulli","Geométrica","Binomial negativa"])
     elif prioris=="Gama":
         return list(["Exponencial","Poisson","Gama (b desconhecido)"])
     elif prioris=="Normal-Gama":
@@ -1000,7 +1003,16 @@ def update_output(a,b,c,d,m,x,x_bernoulli,n,conhecido,prioris,verossimilhancas):
 @app.callback(
     Output("texto_botao","children"),
     [Input("botao","n_clicks"),
-     Input("verossimilhancas","value")]
+     Input("verossimilhancas","value"),
+     Input("input-a","value"),
+     Input('input-b', 'value'),
+     Input('input-c', 'value'),
+     Input('input-d', 'value'),
+     Input('input-m', 'value'),
+     Input('input-x', 'value'),
+     Input('input-x-bernoulli','value'),
+     Input('input-tamanho', 'value'),
+     Input('input-conhecido', 'value')]
 )
 def update_output(n_clicks,verossimilhancas,a,b,c,d,m,x,x_bernoulli,n,conhecido):
     if n_clicks % 2 == 0:
@@ -1199,7 +1211,7 @@ $f(p)=\frac{{\Gamma({a+b}) p^{a-1}(1-p)^{b-1}}}{{\Gamma({a})\Gamma({b})}}\mathbb
 
 $X_1 ... X_n$ condicionalmente independentes e identicamente distribuídos $Bernoulli(p)$
 
-#### Verossimilhança: $L(p|\mathbf{{X}})=p^{{{n*x_bernoulli}}}(1-p)^{{{(n-1)*x_bernoulli}}}$
+#### Verossimilhança: $L(p|\mathbf{{X}})=p^{{{n*x_bernoulli}}}(1-p)^{{{n*(1-x_bernoulli)}}}$
 
 #### Posteriori:
 
